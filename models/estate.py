@@ -9,7 +9,7 @@ class RealState(models.Model):
     
 
     name = fields.Char(string='Nome',required=True)
-    description = fields.Text(string='Descrição')
+    description = fields.Text(string='Descrição', copy=False)
     state = fields.Selection(
         string='Status',
         selection=[('novo', 'Novo'), ('ofertaRecebida', 'Oferta Recebida'),
