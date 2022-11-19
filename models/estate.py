@@ -33,3 +33,10 @@ class RealState(models.Model):
         selection=[('norte', 'Norte'), ('sul', 'Sul'), ('leste', 'Leste'), ('oeste', 'Oeste')],Required=True,default="norte",
         help='Escolha a vista que mais lhe agrada'
     )
+
+    property_type_id = fields.Many2one("estate.property.type", string="Tipo de propriedade")
+    user_id = fields.Many2one("res.users", string="Vendedor", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Comprador", readonly=True, copy=False)
+
+    tag_ids = fields.Many2many("estate.property.tag", string="Tag", copy=False)
+
