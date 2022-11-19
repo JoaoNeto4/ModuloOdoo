@@ -3,7 +3,7 @@
     
     <!-- lista principal estate.property-->
     <record id="action_aula" model="ir.actions.act_window">
-        <field name="name">Imobiliária</field>
+        <field name="name">Real estate</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -13,20 +13,8 @@
         </field>
     </record>
 
-    <!-- lista principal estate.property.type-->
-    <record id="action_property_type" model="ir.actions.act_window">
-        <field name="name">Propriedade</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="o_view_recontent_smiling_face">
-                Adicionar
-            </p>
-        </field>
-    </record>
-
     <!-- lista principal estate.property.tag-->
-    <record id="action_property_tag" model="ir.actions.act_window">
+    <record id="action_property_tags" model="ir.actions.act_window">
         <field name="name">Property tag</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
@@ -37,10 +25,34 @@
         </field>
     </record>
 
-    <menuitem name="Real State" id="root"  />
-    <menuitem name="Settings" id="menu_property" parent="root" sequence="1" action="action_property_type" />
-    <menuitem name="Property Types" id="menu_property_type" parent="menu_property" sequence="5" action="action_property_type"/>
-    <menuitem name="Property tags" id="menu_property_tag" parent="menu_property" sequence="20" action="action_property_tag"/>
+    <!-- lista principal estate.property.type-->
+    <record id="action_property_type" model="ir.actions.act_window">
+        <field name="name">Property type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_recontent_smiling_face">
+                Adicionar
+            </p>
+        </field>
+    </record>
 
+    <menuitem name="Real State" id="estate_root"  action="action_aula"/>
+    <menuitem name="Settingss" id="menu_products" parent="estate_root" />
+    <menuitem name="Property_Types" id="account.menu23" parent="menu_products" action="action_property_type"/>
+    <menuitem name="Property_tags" id="account.menu22" parent="menu_products" action="action_property_tags" />
+
+    <!--
+    <menuitem name="Settings" id="menu_root" parent="root" />
+    <menuitem name="Property tags" id="menu_tag" parent="account.menu_root" sequence="1" action="action_property_tag"/>
+    <menuitem name="Property Types" id="menu_type" parent="account.menu_root" sequence="20" action="action_property_type"/>
+    -->
+    <!--
+        groups="base.group_system
+        groups="base.group_user
+        ir.model.access.csv
+
+    -->
+    
 
 </odoo>
