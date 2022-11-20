@@ -37,12 +37,30 @@
         </field>
     </record>
 
-    <menuitem name="Real State" id="estate_root"  action="action_aula"/>
-    <menuitem name="Settingss" id="menu_products" parent="estate_root" />
-    <menuitem name="Property_Types" id="account.menu23" parent="menu_products" action="action_property_type"/>
-    <menuitem name="Property_tags" id="account.menu22" parent="menu_products" action="action_property_tags" />
+    <!-- testando (ESTA IGUAL AO PRIMEIRO DE CIMA)VER COMO AJUSTAR ISSO-->
+    <record id="action_properties" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_recontent_smiling_face">
+                Adicionar
+            </p>
+        </field>
+    </record>
 
-    <!--
+
+    <menuitem name="Real State" id="estate_root" action="action_aula" />
+
+    <menuitem name="Advertisements" id="menu_Advertisements" parent="estate_root" sequence="1"/>
+    <menuitem name="Properties" id="menu_advertisements" parent="menu_Advertisements" action="action_properties"/>
+    
+    <menuitem name="Settings" id="menu_products" parent="estate_root" sequence="2"/>
+    <menuitem name="Property Types" id="menu23" parent="menu_products" action="action_property_type"/>
+    <menuitem name="Property tags" id="menu22" parent="menu_products" action="action_property_tags" />
+
+    <!--tava ok
+
     <menuitem name="Settings" id="menu_root" parent="root" />
     <menuitem name="Property tags" id="menu_tag" parent="account.menu_root" sequence="1" action="action_property_tag"/>
     <menuitem name="Property Types" id="menu_type" parent="account.menu_root" sequence="20" action="action_property_type"/>
