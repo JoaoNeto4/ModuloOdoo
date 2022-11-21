@@ -44,16 +44,26 @@
             <form string="Real State">
                 <sheet>
                     <group>
+                        <h1><field name="name"/></h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
+
                         <group>
+                            
                             <field name="property_type_id"/>
                             <field name="postcode" />
                             <field name="date_availability"/> 
                         </group>
                         
                         <group>
-                            <field name="name"/>
+                            
                             <field name="expected_price"/>
+                            <!--ERRO
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    Melhor Oferta: <field name="best_price"/>
+                                </div>
+                            -->
                             <field name="selling_price"/>
+                            
 
                         </group>
                         <separator/>
@@ -75,7 +85,7 @@
 
                                 <page string="Offers">       
                                     <group>
-                                        <!---->
+                                        <field name="offer_ids" />
                                     </group>
                                 </page>
 

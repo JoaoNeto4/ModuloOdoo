@@ -27,6 +27,19 @@ class RealState(models.Model):
     garage = fields.Boolean(string='Garagem', copy=False)
     garden  = fields.Boolean(string='Jardim', copy=False)
     garden_area = fields.Integer(string='Area de jardim')
+    state = fields.Selection(
+        selection=[
+            ("nova", "Nova"),
+            ("offer_received", "Oferta Recebida"),
+            ("offer_accepted", "Oferta Aceita"),
+            ("sold", "Vendido"),
+            ("canceled", "Cancelado"),
+        ],
+        string="Status",
+        required=True,
+        copy=False,
+        default="nova",
+    )
     active = fields.Boolean(string='Ativo', active=True, default=True)
     garden_orientation = fields.Selection(
         string='Orientacao do Jardin',
@@ -37,6 +50,32 @@ class RealState(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Tipo de propriedade")
     user_id = fields.Many2one("res.users", string="Vendedor", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Comprador", readonly=True, copy=False)
-
     tag_ids = fields.Many2many("estate.property.tag", string="Tag", copy=False)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Oferta")
 
+    total_area = fields.Integer("Total área", compute="_compute_total")
+    best_price = fields.Float("Melhor oferta", compute="_compute_best_price")
+
+    @api.depends("living_area","garden_area")
+    def _compute_total(self):
+        for prop in self:
+            prop.total_area = living_area + garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for prop in self:
+            best_price = max(prop.offer_ids.mapped("price")) if prop.offer_ids else 0.0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "norte"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+            '''
+            return {'warning': {
+                'title': _("Warning"),
+                'message': ('Este return é opcional, apenas testando!!')}}
+            '''

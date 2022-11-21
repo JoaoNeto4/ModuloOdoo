@@ -8,3 +8,5 @@ class EstatePropertyTag(models.Model):
 
 
     name = fields.Char(string="Nome", required=True)
+
+   
