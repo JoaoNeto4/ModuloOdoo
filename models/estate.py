@@ -30,10 +30,10 @@ class RealState(models.Model):
     state = fields.Selection(
         selection=[
             ("nova", "Nova"),
-            ("offer_received", "Oferta Recebida"),
-            ("offer_accepted", "Oferta Aceita"),
-            ("sold", "Vendido"),
-            ("canceled", "Cancelado"),
+            ("oferta_recebida", "Oferta Recebida"),
+            ("oferta_aceita", "Oferta Aceita"),
+            ("vendido", "Vendido"),
+            ("cancelado", "Cancelado"),
         ],
         string="Status",
         required=True,
@@ -64,7 +64,7 @@ class RealState(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for prop in self:
-            best_price = max(prop.offer_ids.mapped("price")) if prop.offer_ids else 0.0
+            prop.best_price = max(prop.offer_ids.mapped("price")) if prop.offer_ids else 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):

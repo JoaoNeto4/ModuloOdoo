@@ -57,11 +57,7 @@
                         <group>
                             
                             <field name="expected_price"/>
-                            <!--ERRO
-                                <div t-if="record.state.raw_value == 'offer_received'">
-                                    Melhor Oferta: <field name="best_price"/>
-                                </div>
-                            -->
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                             
 

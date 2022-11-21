@@ -31,4 +31,4 @@ class EstatePropertyOffer(models.Model):
     @api.depends("partner_id.name")
     def _compute_description(self):
         for record in self:
-            record.description = "Test for partner %s" % record.partner_id.name
+            record.description = "Parceiro %s" % record.partner_id.name
