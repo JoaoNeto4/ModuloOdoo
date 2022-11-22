@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Utilizado para pesquisa -->
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Real State">
+                <field name="name"/>
+                <field name="postcode" /> 
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms" /> 
+                <field name="garden_orientation"/>
+                <filter string="Teste" name="garden_orientation" domain="[('garden_orientation', '=', 'norte')]"/>
+                
+            </search> 
+        </field>
+    </record>
+    
+</odoo>

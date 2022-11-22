@@ -10,10 +10,15 @@
     'data': [
         'security/ir.model.access.csv',
         'views/estate_menus.xml',
-        'views/estate_property_views.xml',
-        'views/estate_property_type_views.xml',
-        'views/estate_property_tag_views.xml',
-        
+        'views/estate_property/tree.xml',
+        'views/estate_property/search.xml',
+        'views/estate_property/form.xml',
+
+        'views/estate_property_tag/tree.xml',
+        'views/estate_property_type/tree.xml',
+        'views/estate_property_offer/form.xml',
+        'views/estate_property_offer/tree.xml',
+        'views/res_user/form.xml',
         
     ],
     'installable': True,

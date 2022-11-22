@@ -1,11 +1,19 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError, ValidationError
+
 
 from datetime import datetime
+from odoo.tools import float_compare, float_is_zero
+
 
 class RealState(models.Model):
 
     _name = 'estate.property'
     _description = "Test Model"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "Price must be greater than zero"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive"),
+    ]
     
 
     name = fields.Char(string='Nome',required=True)
@@ -48,8 +56,8 @@ class RealState(models.Model):
     )
 
     property_type_id = fields.Many2one("estate.property.type", string="Tipo de propriedade")
-    user_id = fields.Many2one("res.users", string="Vendedor", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", string="Comprador", readonly=True, copy=False)
+    user_id = fields.Many2one("res.users", string="Vendedor", default=lambda self: self.env.user.id)
+    buyer_id = fields.Many2one("res.partner", string="Comprador", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tag", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Oferta")
 
@@ -59,7 +67,7 @@ class RealState(models.Model):
     @api.depends("living_area","garden_area")
     def _compute_total(self):
         for prop in self:
-            prop.total_area = living_area + garden_area
+            prop.total_area = prop.living_area + prop.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -79,3 +87,25 @@ class RealState(models.Model):
                 'title': _("Warning"),
                 'message': ('Este return é opcional, apenas testando!!')}}
             '''
+
+    def action_cancel_state(self):
+        if "vendido" in self.mapped("state"):
+            raise UserError("Propriedades canceladas não podem ser vendidas.")
+        return self.write({"state": "cancelado"})
+
+    def action_sale_state(self):
+        if "canceledo" in self.mapped("state"):
+            raise UserError("Propriedades canceladas não podem ser vendidas.")
+        return self.write({"state": "vendido"})
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_price_difference(self):
+        for prop in self:
+            if (
+                not float_is_zero(prop.selling_price, precision_rounding=0.01)
+                and float_compare(prop.selling_price, prop.expected_price * 90.0 / 100.0, precision_rounding=0.01) < 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    + "You must reduce the expected price if you want to accept this offer."
+                )
