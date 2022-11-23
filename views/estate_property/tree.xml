@@ -6,7 +6,7 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Real State">
+            <tree string="Properties" >
                 <field name="name"/>
                 <field name="postcode"/> 
                 <field name="expected_price"/>

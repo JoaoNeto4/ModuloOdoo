@@ -5,11 +5,16 @@
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
+
             <tree string="Property type">
                 <field name="name"/>
+                <field name="property_ids"/>
+            
             </tree>
+
         </field>
     </record>
+    
     
     
 </odoo>

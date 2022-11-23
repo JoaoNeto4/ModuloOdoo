@@ -1,15 +1,18 @@
 from odoo import api, models, fields
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 from datetime import datetime
-from odoo.tools import float_compare, float_is_zero
+from dateutil.relativedelta import relativedelta
+
 
 
 class RealState(models.Model):
 
     _name = 'estate.property'
     _description = "Test Model"
+    _order = "id desc"
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "Price must be greater than zero"),
         ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive"),
@@ -26,7 +29,8 @@ class RealState(models.Model):
         help='Escolha a vista que mais lhe agrada'
     )
     postcode = fields.Char(string='CEP')
-    date_availability = fields.Date(string='Data disponibilidade', required=True, default=datetime.now())
+    '''date_availability = fields.Date(string='Data disponibilidade', required=True, default=datetime.now())'''
+    date_availability = fields.Date(string='Data disponibilidade', default=lambda self: self._default_date_availability(), copy=False)
     expected_price = fields.Float(string='Preço esperado', required=True, digits=0)
     selling_price = fields.Float(string='Preço de venda', digits=0)
     bedrooms = fields.Integer(string='Quartos', default=2)
@@ -109,3 +113,6 @@ class RealState(models.Model):
                     "The selling price must be at least 90% of the expected price! "
                     + "You must reduce the expected price if you want to accept this offer."
                 )
+
+    def _default_date_availability(self):
+        return fields.Date.context_today(self) + relativedelta(months=3)

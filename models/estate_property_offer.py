@@ -8,6 +8,7 @@ class EstatePropertyOffer(models.Model):
 
     _name = 'estate.property.offer'
     _description = "Oferta "
+    _order = "price desc"
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "Price must be greater than zero"),
     ]
@@ -28,6 +29,9 @@ class EstatePropertyOffer(models.Model):
         string="Status",
         copy=False,
         default=False,
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", string="Property Type", store=True
     )
 
     @api.depends("create_date", "validity")
